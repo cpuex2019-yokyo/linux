@@ -25,7 +25,7 @@ ifeq ($(CONFIG_ARCH_RV64I),y)
 
 	KBUILD_CFLAGS += -mabi=lp64
 	KBUILD_AFLAGS += -mabi=lp64
-	
+
 	KBUILD_CFLAGS	+= $(call cc-ifversion, -ge, 0500, -DCONFIG_ARCH_SUPPORTS_INT128)
 
 	KBUILD_MARCH = rv64im
@@ -82,4 +82,22 @@ core-y += arch/riscv/kernel/ arch/riscv/mm/
 
 libs-y += arch/riscv/lib/
 
-all: vmlinux
+# Settings for create boot image
+
+# Default target when executing plain make
+boot		:= arch/riscv/boot
+KBUILD_IMAGE	:= $(boot)/Image.gz
+
+ifeq ($(CONFIG_RISCV_M_MODE),y)
+KBUILD_IMAGE := $(boot)/loader
+else
+KBUILD_IMAGE := $(boot)/Image.gz
+endif
+
+BOOT_TARGETS := Image Image.gz loader
+
+$(BOOT_TARGETS): vmlinux
+	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
+	@$(kecho) '  Kernel: $(boot)/$@ is ready'
+
+all: $(notdir $(KBUILD_IMAGE))
