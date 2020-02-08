@@ -21,7 +21,7 @@
 #define UART_RX		0	/* In:  Receive buffer */
 #define UART_TX		0	/* Out: Transmit buffer */
 
-#define UART_IER	1	/* Out: Interrupt Enable Register */
+#define UART_IER	4	/* Out: Interrupt Enable Register */
 #define UART_IER_MSI		0x08 /* Enable Modem status interrupt */
 #define UART_IER_RLSI		0x04 /* Enable receiver line status interrupt */
 #define UART_IER_THRI		0x02 /* Enable Transmitter holding register int. */
@@ -31,7 +31,7 @@
  */
 #define UART_IERX_SLEEP		0x10 /* Enable sleep mode */
 
-#define UART_IIR	2	/* In:  Interrupt ID Register */
+#define UART_IIR	8	/* In:  Interrupt ID Register */
 #define UART_IIR_NO_INT		0x01 /* No interrupts pending */
 #define UART_IIR_ID		0x0e /* Mask for the interrupt ID */
 #define UART_IIR_MSI		0x00 /* Modem status interrupt */
@@ -45,7 +45,7 @@
 #define UART_IIR_XOFF		0x10 /* OMAP XOFF/Special Character */
 #define UART_IIR_CTS_RTS_DSR	0x20 /* OMAP CTS/RTS/DSR Change */
 
-#define UART_FCR	2	/* Out: FIFO Control Register */
+#define UART_FCR	8	/* Out: FIFO Control Register */
 #define UART_FCR_ENABLE_FIFO	0x01 /* Enable the FIFO */
 #define UART_FCR_CLEAR_RCVR	0x02 /* Clear the RCVR FIFO */
 #define UART_FCR_CLEAR_XMIT	0x04 /* Clear the XMIT FIFO */
@@ -95,7 +95,7 @@
 	(((x) & UART_FCR_TRIGGER_MASK) >> UART_FCR_R_TRIG_SHIFT)
 #define UART_FCR_R_TRIG_MAX_STATE	4
 
-#define UART_LCR	3	/* Out: Line Control Register */
+#define UART_LCR	12	/* Out: Line Control Register */
 /*
  * Note: if the word length is 5 bits (UART_LCR_WLEN5), then setting 
  * UART_LCR_STOP will select 1.5 stop bits, not 2 stop bits.
@@ -118,7 +118,7 @@
 #define UART_LCR_CONF_MODE_A	UART_LCR_DLAB	/* Configutation mode A */
 #define UART_LCR_CONF_MODE_B	0xBF		/* Configutation mode B */
 
-#define UART_MCR	4	/* Out: Modem Control Register */
+#define UART_MCR	16	/* Out: Modem Control Register */
 #define UART_MCR_CLKSEL		0x80 /* Divide clock by 4 (TI16C752, EFR[4]=1) */
 #define UART_MCR_TCRTLR		0x40 /* Access TCR/TLR (TI16C752, EFR[4]=1) */
 #define UART_MCR_XONANY		0x20 /* Enable Xon Any (TI16C752, EFR[4]=1) */
@@ -129,7 +129,7 @@
 #define UART_MCR_RTS		0x02 /* RTS complement */
 #define UART_MCR_DTR		0x01 /* DTR complement */
 
-#define UART_LSR	5	/* In:  Line Status Register */
+#define UART_LSR	20	/* In:  Line Status Register */
 #define UART_LSR_FIFOE		0x80 /* Fifo error */
 #define UART_LSR_TEMT		0x40 /* Transmitter empty */
 #define UART_LSR_THRE		0x20 /* Transmit-hold-register empty */
@@ -140,7 +140,7 @@
 #define UART_LSR_DR		0x01 /* Receiver data ready */
 #define UART_LSR_BRK_ERROR_BITS	0x1E /* BI, FE, PE, OE bits */
 
-#define UART_MSR	6	/* In:  Modem Status Register */
+#define UART_MSR	24	/* In:  Modem Status Register */
 #define UART_MSR_DCD		0x80 /* Data Carrier Detect */
 #define UART_MSR_RI		0x40 /* Ring Indicator */
 #define UART_MSR_DSR		0x20 /* Data Set Ready */
@@ -151,20 +151,20 @@
 #define UART_MSR_DCTS		0x01 /* Delta CTS */
 #define UART_MSR_ANY_DELTA	0x0F /* Any of the delta bits! */
 
-#define UART_SCR	7	/* I/O: Scratch Register */
+#define UART_SCR	28	/* I/O: Scratch Register */
 
 /*
  * DLAB=1
  */
 #define UART_DLL	0	/* Out: Divisor Latch Low */
-#define UART_DLM	1	/* Out: Divisor Latch High */
+#define UART_DLM	4	/* Out: Divisor Latch High */
 #define UART_DIV_MAX	0xFFFF	/* Max divisor value */
 
 /*
  * LCR=0xBF (or DLAB=1 for 16C660)
  */
-#define UART_EFR	2	/* I/O: Extended Features Register */
-#define UART_XR_EFR	9	/* I/O: Extended Features Register (XR17D15x) */
+#define UART_EFR	8	/* I/O: Extended Features Register */
+#define UART_XR_EFR	36	/* I/O: Extended Features Register (XR17D15x) */
 #define UART_EFR_CTS		0x80 /* CTS flow control */
 #define UART_EFR_RTS		0x40 /* RTS flow control */
 #define UART_EFR_SCD		0x20 /* Special character detect */
@@ -176,16 +176,16 @@
 /*
  * LCR=0xBF, TI16C752, ST16650, ST16650A, ST16654
  */
-#define UART_XON1	4	/* I/O: Xon character 1 */
-#define UART_XON2	5	/* I/O: Xon character 2 */
-#define UART_XOFF1	6	/* I/O: Xoff character 1 */
-#define UART_XOFF2	7	/* I/O: Xoff character 2 */
+#define UART_XON1	16	/* I/O: Xon character 1 */
+#define UART_XON2	20	/* I/O: Xon character 2 */
+#define UART_XOFF1	24	/* I/O: Xoff character 1 */
+#define UART_XOFF2	28	/* I/O: Xoff character 2 */
 
 /*
  * EFR[4]=1 MCR[6]=1, TI16C752
  */
-#define UART_TI752_TCR	6	/* I/O: transmission control register */
-#define UART_TI752_TLR	7	/* I/O: trigger level register */
+#define UART_TI752_TCR	24	/* I/O: transmission control register */
+#define UART_TI752_TLR	28	/* I/O: trigger level register */
 
 /*
  * LCR=0xBF, XR16C85x
@@ -206,7 +206,7 @@
 #define UART_TRG_120		0x78
 #define UART_TRG_128		0x80
 
-#define UART_FCTR	1	/* Feature Control Register */
+#define UART_FCTR	4	/* Feature Control Register */
 #define UART_FCTR_RTS_NODELAY	0x00  /* RTS flow control delay */
 #define UART_FCTR_RTS_4DELAY	0x01
 #define UART_FCTR_RTS_6DELAY	0x02
@@ -224,7 +224,7 @@
 /*
  * LCR=0xBF, FCTR[6]=1
  */
-#define UART_EMSR	7	/* Extended Mode Select Register */
+#define UART_EMSR	28	/* Extended Mode Select Register */
 #define UART_EMSR_FIFO_COUNT	0x01  /* Rx/Tx select */
 #define UART_EMSR_ALT_COUNT	0x02  /* Alternating count select */
 
